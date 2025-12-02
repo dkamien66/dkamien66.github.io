@@ -1,0 +1,66 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Soccer Commentator</h1>
+        <h2>A CS566 Computer Vision Student Project. Attempting Object Tracking with multiple techniques</h2>
+        <h3>Varun Sivakumar, Keiji Toriumi, Damien Kim</h3>
+        <hr>
+        <h4>So, what was the motivation?</h4>
+        <p>
+
+Soccer matches have a lot going on; it can be difficult for the audience to keep track of them. As a result, live commentaries are often selective and not holistic, failing to capture the whole picture. This poses a real problem for blind audiences, who cannot independently keep track of the game. 
+<br><br>
+Our project seeks to address this challenge by generating real-time text commentary from a soccer video stream. We will begin with core tasks such as detecting players and the ball, recognizing jersey numbers for player identity, and identifying ball possession and location. Building on this, we will incrementally add higher level event detection such as passes, shots, tackles, and out-of-play, and output concise, human-readable commentary lines. 
+In addition, it will challenge us on our Computer Vision concepts, allowing us to apply key methods learnt in class and deepen our understanding, pushing us to pursue this project.
+        </p>
+        <h4>What was our approach? How did we implement it?</h4>
+        <p>
+            Begin with OCR (optical character recognition). We tested PyTesseract, OpenOCR, and found this repo online 
+            https://github.com/mkoshkina/jersey-number-pipeline for inspiration. 
+            <br><br>
+            *VARUN'S DETAILS ADD HERE
+            <br>Its training set alone comes with more than 1200 images. The first step in doing OCR following the repository is ReID, which is supposed to detect poses to find outliers, cases where jersey numbers are not visible, so that they can be excluded from OCR. To do so, first we need to extract features from each image. This ran at an extremely slow pace, taking 8hrs for 100 images, or roughly 12 images per hour. As a result, it became clear to me that I cannot proceed with this step as intended. Hence, I read through the repository, learnt core OCR ideas and decided to implement the necessary steps manually.
+
+
+
+            <br>
+            <br>
+            For object detection, use a neural network to generate bounding boxes. Use YOLO11 through the Roboflow platform.
+            A dataset of 663 images was used to train the model. It detected the ball and players quite successfully. 
+            An image of the output is shown below. An interesting note is that it was able to distinguish between the players 
+            and people standing on the sideline quite well.
+            <br>
+            <img src="neural_network_result.png" style="width:400px;height:400px">
+            <br>
+        </p>
+
+        <h4>The results???</h4>
+        <p>
+            Using Google Colab's GPU, we configured the program and ran it:
+            <br>
+            <video width="320" height="240" controls>
+                <source src="1080soccer.mov" type="video/mp4">
+                Could not load video.
+            </video>
+        </p>
+
+        <h4>The problems we encountered</h4>
+        <p>
+            In order to read player jersey numbers, we needed optical character recognition. PyTesseract was a powerful tool, but it
+            did not work.
+            <br>
+            <img src="failed_1.jpeg" style="width:400px;height:400px;">
+            <br>
+            We tried to use traditional methods of contours and edge detection to begin the process of identifying players. 
+            But, we struggled getting the program to differentiate what was needed (players ,balls, jerseys, and jersey numbers)
+            and what wasn't (field, people and text in the background, noise on the field).
+            <br>
+            <img src="failed_2.png" style="width:400px;height:400px;">
+            <br>
+            Even filtering strategies, like checking the area of the contour (min max constraint) were not effective, 
+            considering the players and ball can change size depending on the camera.
+        </p>
+
+    </body>
+</html>
