@@ -3,7 +3,7 @@
     </head>
     <body>
         <h1>Soccer Commentator</h1>
-        <h2>A CS566 Computer Vision Student Project. Attempting Object Tracking with multiple techniques</h2>
+        <h2>A CS566 Computer Vision Student Project. Attempting Object Tracking and Localization with multiple techniques</h2>
         <h3>Varun Sivakumar, Keiji Toriumi, Damien Kim</h3>
         <hr>
         <h4>So, what was the motivation?</h4>
@@ -31,7 +31,7 @@ In addition, it will challenge us on our Computer Vision concepts, allowing us t
             An image of the output is shown below. An interesting note is that it was able to distinguish between the players 
             and people standing on the sideline quite well.
             <br>
-            <img src="neural_network_result.png" style="width:400px;height:400px">
+            <img src="visuals/neural_network_result.png" style="width:400px;height:400px">
             <br>
         </p>
 
@@ -40,7 +40,7 @@ In addition, it will challenge us on our Computer Vision concepts, allowing us t
             Using Google Colab's GPU, we configured the program and ran it:
             <br>
             <video width="320" height="240" controls>
-                <source src="1080soccer.mov" type="video/mp4">
+                <source src="visuals/1080soccer.mov" type="video/mp4">
                 Could not load video.
             </video>
         </p>
@@ -50,13 +50,13 @@ In addition, it will challenge us on our Computer Vision concepts, allowing us t
             In order to read player jersey numbers, we needed optical character recognition. PyTesseract was a powerful tool, but it
             did not work.
             <br>
-            <img src="failed_1.jpeg" style="width:400px;height:400px;">
+            <img src="visuals/failed_1.jpeg" style="width:400px;height:400px;">
             <br>
             We tried to use traditional methods of contours and edge detection to begin the process of identifying players. 
             But, we struggled getting the program to differentiate what was needed (players ,balls, jerseys, and jersey numbers)
             and what wasn't (field, people and text in the background, noise on the field).
             <br>
-            <img src="failed_2.png" style="width:400px;height:400px;">
+            <img src="visuals/failed_2.png" style="width:400px;height:400px;">
             <br>
             Even filtering strategies, like checking the area of the contour (min max constraint) were not effective, 
             considering the players and ball can change size depending on the camera.
