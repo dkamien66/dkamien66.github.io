@@ -52,6 +52,8 @@
             <li><a href="https://github.com/mkoshkina/jersey-number-pipeline">(Github Repo) jersey-number-pipeline</a></li>
             <li><a href="https://openaccess.thecvf.com/content/CVPR2024W/CVsports/papers/Koshkina_A_General_Framework_for_Jersey_Number_Recognition_in_Sports_Video_CVPRW_2024_paper.pdf">(Paper) A General Framework for Jersey Number Recognition in Sports Video</a></li>
             <p>These resources aided our implementation of the OCR pipline.</p>
+            <li><a href="https://ieeexplore.ieee.org/document/5298809"> (Paper) Soccer Ball Tracking Using Dynamic Kalman Filter with Velocity Control</a></li>
+            <p>This resource aided our implementation of the ball tracking algorithm.</p>
     
         </p>
         <hr>
@@ -139,7 +141,8 @@
             <br>
             <div id="ball_tracking">
                 For the ball, YOLOv8 wasn't effective. The model failed to detect the ball when it was moving and in posession of a player.
-                Thus, Varun found some online sources and implemented an algorithm using the ball's velocity and motion to estimate its position on the image.
+                To address this, Varun referred to an online paper describing the use of Kalman filtering to estimate a soccer ball's velocity and motion trajectory,
+                and implemented a similar approach to predict the ball's position even when YOLO failed to detect it.
                 This was more effective, but because of an issue where the tracking was off due to the ball's sudden change in direction when kicked,
                 improvements were made to snap the ball tracker to the nearest player's leg.
                 This was more effective, but still failed in the case when the ball is kicked into the goal. It goes past the defender and the algorithm snaps it to the defender's leg.
