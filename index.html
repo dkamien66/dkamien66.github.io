@@ -3,49 +3,118 @@
     </head>
     <body>
         <h1>Soccer Commentator</h1>
-        <h2>A CS566 Computer Vision Student Project. Attempting Object Tracking and Localization with multiple techniques</h2>
+        <h2>A CS566 Computer Vision Student Project Attempting Object Tracking and Localization with Multiple Techniques</h2>
         <h3>Varun Sivakumar, Keiji Toriumi, Damien Kim</h3>
+        <h3>
+            <a href="https://docs.google.com/presentation/d/1v_VZspCd_MHnDR3Ap5I38BIB00CqaqBuK7_SCdr3lAc/edit?usp=sharing">
+                Presentation Link
+            </a>
+            <br>
+            <a href="https://github.com/ktoriumi107/CV-Soccer-Commentator-CS566/tree/keiji">
+                Project Link
+            </a>
+        </h3>
         <hr>
         <h4>So, what was the motivation?</h4>
         <p>
-
-Soccer matches have a lot going on; it can be difficult for the audience to keep track of them. As a result, live commentaries are often selective and not holistic, failing to capture the whole picture. This poses a real problem for blind audiences, who cannot independently keep track of the game. 
-<br><br>
-Our project seeks to address this challenge by generating real-time text commentary from a soccer video stream. We will begin with core tasks such as detecting players and the ball, recognizing jersey numbers for player identity, and identifying ball possession and location. Building on this, we will incrementally add higher level event detection such as passes, shots, tackles, and out-of-play, and output concise, human-readable commentary lines. 
-In addition, it will challenge us on our Computer Vision concepts, allowing us to apply key methods learnt in class and deepen our understanding, pushing us to pursue this project.
+            Soccer matches have a lot going on; it can be difficult for the audience to keep track of them. As a result, live 
+            commentaries are often selective and not holistic, failing to capture the whole picture. This poses a real problem 
+            for blind audiences, who cannot independently keep track of the game. 
+            <br>
+            <br>
+            Our project seeks to address this challenge by generating real-time text commentary from a soccer video stream. 
+            In addition, it will challenge us on our Computer Vision concepts, allowing us to apply key methods learned in class 
+            and deepen our understanding, pushing us to pursue this project.
         </p>
+        <hr>
         <h4>What was our approach? How did we implement it?</h4>
         <p>
-            Begin with OCR (optical character recognition). We tested PyTesseract, OpenOCR, and found this repo online 
-            https://github.com/mkoshkina/jersey-number-pipeline for inspiration. 
+            We had the core tasks of:
+            <li>Object detection for players and the ball</li>
+            <li>OCR (optical character recognition) for recognizing jersey numbers and team identity</li> 
+            <li>Object tracking to support continuous gameplay </li>
+            <li>Localization to identify locations on the field </li>
+            <li>Have output: concise, human-readable commentary lines in the console</li>
+
             <br><br>
-            *VARUN'S DETAILS ADD HERE
-            <br>Its training set alone comes with more than 1200 images. The first step in doing OCR following the repository is ReID, which is supposed to detect poses to find outliers, cases where jersey numbers are not visible, so that they can be excluded from OCR. To do so, first we need to extract features from each image. This ran at an extremely slow pace, taking 8hrs for 100 images, or roughly 12 images per hour. As a result, it became clear to me that I cannot proceed with this step as intended. Hence, I read through the repository, learnt core OCR ideas and decided to implement the necessary steps manually.
+            
+            For object detection, we ended up utilizing Ultralytics YOLO AI framework model for its ease of use and good performance.
+            <br>
+            Keiji's first approach was to use a neural network to generate bounding boxes for the players and the ball. 
+            YOLO11 was available on the Roboflow platform and provided a dataset of 663 images for training.
+            <br>
+            An image of its success in distinguishing players on the field and the sidelines:
+            <br>
+            <img src="visuals/neural_network_result.png" style="width:600px;height:600px">
+            <br>
+            <br>
+            The training graph below demonstrates a good performance of 99% accuracy on players but only 57% accuracy on the ball. 
+            Keiji presumed the ball's fast movement caused the lower accuracy.
+            <br>
+            <img src="visuals/graph.png">
 
+            <br><br>
+            For OCR, we initally tested PyTesseract, EasyOCR, and the Github repo (https://github.com/mkoshkina/jersey-number-pipeline) for inspiration. 
+            See "The problems we encountered" section for why we skipped PyTesseract.
+            <br>
+            Varun's first approach was learning the OCR algorithm and pipeline from the Github repo. Despite the prolific image dataset and 
+            ReID algorithm to find outliers of unidentifiable jersey numbers to be excluded from OCR, the time to extract features 
+            from our images took far too long: 12 images per hour. 
+            Varun thus implemented the core OCR pipeline steps manually: start with a cropped image of a player's back, detect the player, detect the ball, and perform OCR using the EasyOCR library. 
+            Note, YOLOv8 was used for the detection tasks.
+            The rationale was that performing OCR on a smaller region would compute quicker. However, the images weren't getting cropped correctly:
+            <br>
+            <img src="visuals/cropped_error.jpg" style="width:400px;height:400px">
+            <br>
+            So, Varun resorted to keep the image as the bounding box around the player with the following result:
+            <br>
+            <img src="visuals/success_ocr.png" style="width:400px;height:400px">
+            <br>
+            The next step was to expand this to all players in the image, but it was unsuccessful:
+            <br>
+            <img src="visuals/entire_image_ocr_result.jpg" style="width:1200px;height:500px">
+            <br><br>
+            ReID could be implemented here to filter out jersey positions with unidentifiable numbers.
+            Another alternate solution is to continuously run OCR on every player every frame, waiting for the jersey number to become identifiable. 
+            This cost is the speed of the system computation.
 
-
+            <br><br>
+            For object tracking, we implemented detection-based tracking.
+            
+            <br><br>
+            For localization, Keiji first approached it using the Hough Line Transform:
             <br>
+            <img src="visuals/hough.png" style="width:400px;height:400px">
+            <br><br>
+            His second approach was RANSAC:
             <br>
-            For object detection, use a neural network to generate bounding boxes. Use YOLO11 through the Roboflow platform.
-            A dataset of 663 images was used to train the model. It detected the ball and players quite successfully. 
-            An image of the output is shown below. An interesting note is that it was able to distinguish between the players 
-            and people standing on the sideline quite well.
+            <img src="visuals/ransac.png" style="width:400px;height:400px">
+            
+            <br><br>
+            For output, we used print statements for the players identity and their following action:
             <br>
-            <img src="visuals/neural_network_result.png" style="width:400px;height:400px">
-            <br>
+            <img src="visuals/console_output.png" style="width:400px;height:400px">
         </p>
-
-        <h4>The results???</h4>
+        <hr>
+        <h4>The results</h4>
         <p>
-            Using Google Colab's GPU, we configured the program and ran it:
+            We reconfigured the program on Google Colab to use its free GPU:
             <br>
+            <h5>Object Tracking with an attempt at OCR of jersey numbers<h5>
             <video width="320" height="240" controls>
                 <source src="visuals/1080soccer.mov" type="video/mp4">
                 Could not load video.
             </video>
+            <br><br>
+            <h5>Object Tracking, OCR attempt, and Localization</h5>
+            <video width="320" height="240" controls>
+                <source src="visuals/1080soccer_with_overlays.mov" type="video/mp4">
+                Could not load video.
+            </video>
         </p>
-
+        <hr>
         <h4>The problems we encountered</h4>
+        <h5>OCR</h5>
         <p>
             In order to read player jersey numbers, we needed optical character recognition. PyTesseract was a powerful tool, but it
             did not work.
@@ -61,6 +130,18 @@ In addition, it will challenge us on our Computer Vision concepts, allowing us t
             Even filtering strategies, like checking the area of the contour (min max constraint) were not effective, 
             considering the players and ball can change size depending on the camera.
         </p>
-
+        <h5>Ball Tracking</h5>
+        <p>YOLO11 had 57% accuracy on the ball detection.</p>
+        <hr>
+        <h4>Future prospects</h4>
+        <p>
+            A new ball tracking algorithm.
+        </p>
+        <hr>
+        <h4>Resources we found helpful</h4>
+        <p>
+            <li>https://github.com/mkoshkina/jersey-number-pipeline</li>
+            <li>https://openaccess.thecvf.com/content/CVPR2024W/CVsports/papers/Koshkina_A_General_Framework_for_Jersey_Number_Recognition_in_Sports_Video_CVPRW_2024_paper.pdf</li>
+        </p>
     </body>
 </html>
