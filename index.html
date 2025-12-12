@@ -54,7 +54,7 @@
             algorithmically. 
             <br>
             <br>
-            We propose a data-based method using traditional computer vision methods that provide enough data to allow for thorough and thoughtful commentary.
+            We propose a data-based method using traditional computer vision methods that provides enough data to allow for thorough and thoughtful commentary.
             The purpose of this is to improve upon the live and AI-based commentators by providing data that gives the whole picture of the game. This benefits
             viewers since they will have more control over what specifically they want to hear about.
         </p>
@@ -79,7 +79,7 @@
             We had the core tasks of:
             <li>Object detection for players and the ball</li>
             <li>OCR (optical character recognition) for recognizing jersey numbers and team identity</li> 
-            <li>Motion tracking </li>
+            <li>Object tracking </li>
             <li>Localization to identify locations on the field </li>
             <li>Have output: concise, human-readable commentary lines in the console</li>
 
@@ -218,7 +218,7 @@
         <div class="container">
             <figure>
                 <img src="visuals/failed_1.jpeg" style="width:400px;height:400px;">
-                <figcaption>PyTesseract was a powerful tool, but it was not successful.</figcaption>
+                <figcaption>PyTesseract was a powerful tool, but it was not successful with the noisy and distorted images of player jerseys.</figcaption>
             </figure>
 
             <figure>
@@ -246,14 +246,26 @@
         <p>YOLO11 had 57% accuracy on the ball detection. <a href="#ball_tracking">Click here to read about our ball tracking problem.</a></p>
         <hr>
         <h4 id="conclusion">Future prospects and Conclusions</h4>
+        <h5>Summary of contributions</h5>
+        <ul>
+            <li>OCR pipeline that integrates YOLOv8 player detection with EasyOCR for jersey recognition.</li>
+            <li>Custom ball-tracking module using a Kalman filter with velocity prediction and player-leg snapping logic.</li>
+            <li>Localization using both Hough Transform and RANSAC to detect field boundaries and lines.</li>
+            <li>Real-time commentary generator translating the data from the pipeline into readable sentences.</li>
+        </ul>
+        <h5>Future Work</h5>
         <p>
-            <li>Improved ball tracking algorithm that handles sudden changes in velocity and goal siutations.</li>
-            <li>Generalizability was an end goal we had in our proposal. We have not yet tested on similar sports, 
+            <li>The ball tracking algorithm fails to track the ball when it is kicked into the goal. Adding this 
+                functionality would allow for direct goal tracking. This problem would involve a vision system 
+                capable of detecting the ball within the net. This is difficult because the ball and net are the 
+                same color and the ball is easily covered.</li>
+            <li>Generalizability was an end goal that we had in our proposal. We have not yet tested on similar sports, 
                 but our reliance on the YOLOv8 model and its dataset for soccer for our object detection helps us 
                 understand that the more generalizable it is, the more expensive it would be to compute. Having a 
                 neural network specific to a sport makes sense in this way. It's more accurate and cheaper to work with.</li>
             <li>Different neural network models. For this project, using traditional computer vision methods sounded better, 
-                but using machine learning turned out to be much easier to implement. YOLO was just one AI framework model we found, and there are more being implemented.</li>
+                but using machine learning turned out to be much easier to implement. YOLO was just one AI framework model we 
+                found, there are more that may allow for robust data generation while still being accurate and easy to implement.</li>
         </p>
         <h5>Video overview of project</h5>
         <figure>
