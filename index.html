@@ -40,16 +40,23 @@
             </ul>
         </div>
         <hr>
-        <h4 id="motivation">So, what was the motivation?</h4>
+        <h4 id="motivation">Motivation</h4>
         <p>
             Soccer matches have a lot going on; it can be difficult for the audience to keep track of them. As a result, live 
             commentaries are often selective and not holistic, failing to capture the whole picture. This poses a real problem 
             for blind audiences, who cannot independently keep track of the game. 
             <br>
             <br>
-            Our project seeks to address this challenge by generating real-time text commentary from a soccer video stream. 
-            In addition, it will challenge us on our Computer Vision concepts, allowing us to apply key methods learned in class 
-            and deepen our understanding, pushing us to pursue this project.
+            This problem has been addressed in the past (<a href="https://aws.amazon.com/blogs/media/revolutionizing-fan-engagementcer-bundesliga-generative-ai-powered-live-commentary/">Amazon Web Services blog post</a>). 
+            For example, Amazon Web Services has worked to develop a generative AI-powered live commentator. Although this model 
+            had high accuracy in what it produces, it does not add any information beyond what live human commentators are able
+            to add. The output is also harder to interpret since the data is not well-structured in a way that can be analyzed easily
+            algorithmically. 
+            <br>
+            <br>
+            We propose a data-based method using traditional computer vision methods that provide enough data to allow for thorough and thoughtful commentary.
+            The purpose of this is to improve upon the live and AI-based commentators by providing data that gives the whole picture of the game. This benefits
+            viewers since they will have more control over what specifically they want to hear about.
         </p>
         <hr>
         <h4 id="resources">Resources we found for this project:</h4>
@@ -72,10 +79,19 @@
             We had the core tasks of:
             <li>Object detection for players and the ball</li>
             <li>OCR (optical character recognition) for recognizing jersey numbers and team identity</li> 
-            <li>Object tracking to support continuous gameplay </li>
+            <li>Motion tracking </li>
             <li>Localization to identify locations on the field </li>
             <li>Have output: concise, human-readable commentary lines in the console</li>
 
+            This is summarized in a diagram of the pipeline.
+
+            <figure>
+                <img src="visuals/diagram.png">
+                <figcaption>
+                    The diagram of the pipeline used for the soccer commentator.
+                </figcaption>
+            </figure>
+ 
             <br><br>
             
             <div class="container">
