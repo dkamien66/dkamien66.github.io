@@ -74,7 +74,7 @@
             <p>This resource aided our implementation of the ball tracking algorithm.</p>
         </p>
         <hr>
-        <h4 id="approach">What was our approach? How did we implement it?</h4>
+        <h4 id="approach">Approach and Implementation</h4>
         <p>
             We had the core tasks of:
             <li>Object detection for players and the ball</li>
@@ -83,12 +83,13 @@
             <li>Localization to identify locations on the field </li>
             <li>Have output: concise, human-readable commentary lines in the console</li>
 
-            This is summarized in a diagram of the pipeline.
+            <br><br>
+            This is summarized in a diagram of the functionality of the pipeline.
 
             <figure>
                 <img src="visuals/diagram.png">
                 <figcaption>
-                    The diagram of the pipeline used for the soccer commentator.
+                    The diagram of an example use of the pipeline used for the soccer commentator.
                 </figcaption>
             </figure>
  
@@ -213,7 +214,7 @@
             </div>
         </p>
         <hr>
-        <h4 id="discussion">The problems we encountered</h4>
+        <h4 id="discussion">Discussion</h4>
         <h5>OCR</h5>
         <div class="container">
             <figure>
@@ -248,11 +249,26 @@
         <h4 id="conclusion">Future prospects and Conclusions</h4>
         <h5>Summary of contributions</h5>
         <ul>
-            <li>OCR pipeline that integrates YOLOv8 player detection with EasyOCR for jersey recognition.</li>
+            <li>OCR that integrates YOLOv8 player detection with EasyOCR for jersey recognition.</li>
             <li>Custom ball-tracking module using a Kalman filter with velocity prediction and player-leg snapping logic.</li>
             <li>Localization using both Hough Transform and RANSAC to detect field boundaries and lines.</li>
             <li>Real-time commentary generator translating the data from the pipeline into readable sentences.</li>
         </ul>
+
+        <h5>Limitations</h5>
+                <ul>
+                    <li>The OCR failed to recognize the jersey number in most cases. This is likely due to the low resolution in
+                    the small bounding boxes that players were confined to in combination with the noisy and distorted view of the jerseys.</li>
+                    <li>The localization was unable to map the players to known field locations like the penalty box and center circle. It instead used positions relative to other
+                    objects and the known corner of the field. This reduced accuracy because a homography was not able to be computed since there were not enough points and the keypoints
+                    used for coordinate estimation were further away from each player. This meant that there was minimal validation of the player
+                    positions by comparing them to other known field locations. This was rectified by basing the motion tracking on the movement
+                    of objects relative to each other and the field boundaries, rather than known marks on the field.</li>
+                    <li>The accuracy of this pipeline was only able to be tested by-hand. There was no available dataset that included labels for
+                    the objects as well as their ground-truth field locations from a camera broadcast taken at an oblique angle that is similar to
+                    what would be seen in real games. Based on the raw volume of data produced, validating this pipeline was time-consuming and error prone.
+                    We chose to instead focus on key elements for each section of the pipeline. </li>
+                </ul>
         <h5>Future Work</h5>
         <p>
             <li>The ball tracking algorithm fails to track the ball when it is kicked into the goal. Adding this 
